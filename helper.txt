@@ -1,0 +1,28 @@
+1. Deploying monorepo (https, websocket, prisma, postgres, next)
+
+    * SETUP -> Prisma, Postgres
+    - npx create-turbo@latest
+    - chose via pnpm
+    - cd into packages/prisma
+        - npm init -y
+        - npx tsc --init 
+    - put devDependencies in prisma package (if npm -> * if pnpm -> workspace:*)
+    - extend in tsconfig
+    - cd into packages/prisma
+        - pnpm add prisma
+        - npx prisma init
+    - add schema in schema.prisma
+    - make db in neon, paste url in .env
+    - cd into packages/prisma
+        - npx prisma migrate dev
+        - npx prisma generate
+    - create prisma/src/index.ts to export the prisma client
+    - add exports to package of prisma
+    - import this in devDependencies package of web
+    - cd root and global "pnpm install"
+
+2. env variables
+3. dev vs prod environments, periodic releases
+4. Testing in CI pipelines
+5. Certificate mgt
+6. CD pipeline to refresh cert every month
