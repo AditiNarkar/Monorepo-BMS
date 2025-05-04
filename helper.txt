@@ -21,6 +21,27 @@
     - import this in devDependencies package of web
     - cd root and global "pnpm install"
 
+    * SETUP -> https-server, ws-server
+    - cd into apps/http-server and into apps/ws-server
+        - npm init -y
+        - npx tsc --init 
+    - put devDependencies, change scripts in package (both)
+    - extend and compilerOptions in tsconfig (both)
+
+    * SETUP -> https-server
+    - cd into apps/http-server 
+        - pnpm add express @types/express
+        - to run -> npm run dev
+        - postman -> http://localhost:3002
+    (possible error -> client and generated prisma)
+    - import { PrismaClient } from "../generated/prisma/index.js";
+
+    * SETUP -> ws-server
+    - cd into apps/ws-server 
+        - pnpm add ws @types/ws
+        - to run -> npm run dev
+        - postman -> ws://localhost:3001
+
 2. env variables
 3. dev vs prod environments, periodic releases
 4. Testing in CI pipelines
