@@ -65,12 +65,14 @@
     - add node, nginx to both servers
     - clone monorepo to both servers
         - global pnpm install
-        - set different .env database_url for each
-        - in packages/prisma of each do "npx prisma migrate dev"
+        - cd in packages/prisma set different .env DATABASE_URL for each 
+        - cd in packages/prisma of each do "npx prisma migrate dev"
 
-    - start 3 processes (next, ws, http)
+    - build and start 3 processes (next, ws, http)
         - global pnpm run build
-        
+        - npm i -g pm2 (to start 3 processes in single terminal)
+        - cd apps/http-server -> pm2 start npm --name "http-server" --start
+
     - point domain name to respective servers
 
         (dev)
