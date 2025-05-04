@@ -1,4 +1,4 @@
-1. Deploying monorepo (https, websocket, prisma, postgres, next)
+1. Creating a monorepo (https, websocket, prisma, postgres, next)
 
     * SETUP -> Prisma, Postgres
     - npx create-turbo@latest
@@ -42,8 +42,56 @@
         - to run -> npm run dev
         - postman -> ws://localhost:3001
 
-2. env variables
-3. dev vs prod environments, periodic releases
+
+
+2. dev vs prod environments, periodic releases
+
+    any changes
+        |
+        |
+    main branch -------> production branch  
+        |                       |
+        |                       |
+    staging website       main website
+
+    - There are two servers and two yml files, main and production (diag)
+
+    ssh -i ~/.ssh/adt-test-1.pem ubuntu@13.50.239.64    (dev)
+    ssh -i ~/.ssh/adt-test-1.pem ubuntu@16.16.252.189   (prod)
+
+
+3. Deploying created monorepo
+
+    - add node, nginx to both servers
+    - clone monorepo to both servers
+        - global pnpm install
+        - set different .env database_url for each
+        - in packages/prisma of each do "npx prisma migrate dev"
+
+    - start 3 processes (next, ws, http)
+        - global pnpm run build
+        
+    - point domain name to respective servers
+
+        (dev)
+        staging.adt-http.scriptisland.fun
+        staging.adt-ws.scriptisland.fun
+        staging.adt-frontend.scriptisland.fun
+
+        (prod)
+        adt-http.scriptisland.fun
+        adt-ws.scriptisland.fun
+        adt-frontend.scriptisland.fun
+    
+    - refresh nginx config
+    - test
+
+
+        mac    -----> deploying machine (aws, digital ocean) <----  github
+    (pub, priv)                     (pub)                           (priv)
+
+
 4. Testing in CI pipelines
 5. Certificate mgt
 6. CD pipeline to refresh cert every month
+7. CD pipeline to copy prod DB to dev DB every day
