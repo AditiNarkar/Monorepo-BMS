@@ -1,0 +1,36 @@
+name: Deploy to staging
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH agent with EC2 key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add EC2 instance to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy and restart on EC2
+        run: |
+          ssh ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+              cd Monorepo-BMS/
+              git pull
+              pnpm install
+              pnpm run build
+              pm2 restart web
+              pm2 restart http-server
+              pm2 restart ws-server
+            EOF

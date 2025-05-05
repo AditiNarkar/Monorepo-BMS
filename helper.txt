@@ -44,7 +44,12 @@
 
 
 
-2. dev vs prod environments, periodic releases
+2. Deploying created monorepo
+
+    ADDING KEYS:
+        mac    -----> deploying machine (aws, digital ocean) <----  github
+    (pub, priv)                     (pub)                           (priv)
+
 
     any changes
         |
@@ -55,50 +60,43 @@
     staging website       main website
 
     - There are two servers and two yml files, main and production (diag)
-
     ssh -i ~/.ssh/adt-test-1.pem ubuntu@13.50.239.64    (dev)
     ssh -i ~/.ssh/adt-test-1.pem ubuntu@16.16.252.189   (prod)
-
-
-3. Deploying created monorepo
 
     - add node, nginx to both servers
     - clone monorepo to both servers
         - global pnpm install
-        - cd in packages/prisma set different .env DATABASE_URL for each 
+        - cd in packages/prisma and in apps/web set different .env DATABASE_URL for each 
         - cd in packages/prisma of each do "npx prisma migrate dev"
 
     - build and start 3 processes (next, ws, http)
         - global pnpm run build
         - npm i -g pm2 (to start 3 processes in single terminal)
-        - cd apps/http-server -> pm2 start npm --name "web" -- start (for all 3)
+        - cd apps/web -> pm2 start npm --name "web" -- start (for all 3)
         - http-3002, web(frontend)-3000, ws-3001
 
-    - configure nginx   
-        - cd apps/web -> sudo vi /etc/nginx/nginx.conf
+    - configure and refresh nginx   
+        - cd apps/web -> sudo nano /etc/nginx/nginx.conf (point domain name to respective servers)
         - refer nginx-config folder
         - cd apps/web -> sudo nginx -s reload
-        
-
-    - point domain name to respective servers
-
         (dev)
         staging.adt-http.scriptisland.fun
         staging.adt-ws.scriptisland.fun
         staging.adt-frontend.scriptisland.fun
-
         (prod)
         adt-http.scriptisland.fun
         adt-ws.scriptisland.fun
         adt-frontend.scriptisland.fun
-    
-    - refresh nginx config
-    - test
 
+    - restrict production branch in github (add ruleset)
 
-        mac    -----> deploying machine (aws, digital ocean) <----  github
-    (pub, priv)                     (pub)                           (priv)
+3. dev vs prod environments, periodic releases
 
+    yaml steps (after code is pushed)
+        - ssh
+        - cd Monorepo-BMS/ && git pull
+        - pnpm run build
+        - pm2 restart web
 
 4. Testing in CI pipelines
 5. Certificate mgt
