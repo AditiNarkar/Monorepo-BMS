@@ -21,7 +21,7 @@ jobs:
       - name: Add EC2 instance to known_hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -T 5 -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan -T 60 -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts
 
       - name: Deploy and restart on EC2
         run: |
