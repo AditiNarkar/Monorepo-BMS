@@ -26,12 +26,7 @@ jobs:
       - name: Deploy and restart on EC2
         run: |
           ssh ubuntu@${{ secrets.EC2_IP }} << 'EOF'
-            cd Monorepo-BMS/
-            git pull
-            export PATH=/home/ubuntu/.nvm/versions/node/v22.15.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-            pnpm install
-            pnpm run build
-            pm2 restart web
-            pm2 restart http-server
-            pm2 restart ws-server
+            cd ~/Monorepo-BMS
+            chmod +x deploy.sh
+            ./deploy.sh
           EOF
