@@ -21,16 +21,16 @@ jobs:
       - name: Add EC2 instance to known_hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan -T 5 -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts
 
       - name: Deploy and restart on EC2
         run: |
           ssh ubuntu@${{ secrets.EC2_IP }} << 'EOF'
-              cd Monorepo-BMS/
-              git pull
-              pnpm install
-              pnpm run build
-              pm2 restart web
-              pm2 restart http-server
-              pm2 restart ws-server
-            EOF
+            cd Monorepo-BMS/
+            git pull
+            pnpm install
+            pnpm run build
+            pm2 restart web
+            pm2 restart http-server
+            pm2 restart ws-server
+          EOF
