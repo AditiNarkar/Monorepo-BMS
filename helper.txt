@@ -72,7 +72,7 @@
     - build and start 3 processes (next, ws, http)
         - global pnpm run build
         - npm i -g pm2 (to start 3 processes in single terminal)
-        - cd apps/web -> pm2 start npm --name "web" -- start (for all 3)
+        - cd apps/web -> pm2 start npm --name "<name>" -- start (for all 3)
         - http-3002, web(frontend)-3000, ws-3001
 
     - configure and refresh nginx   
