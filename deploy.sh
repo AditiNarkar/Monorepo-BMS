@@ -1,6 +1,6 @@
 #!/bin/bash
 cd ~/Monorepo-BMS
-git pull
+git pull origin main
 export PATH=/home/ubuntu/.nvm/versions/node/v22.15.0/bin:$PATH
 pnpm install
 pnpm run build
