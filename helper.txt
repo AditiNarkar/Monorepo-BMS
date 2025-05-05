@@ -71,7 +71,14 @@
     - build and start 3 processes (next, ws, http)
         - global pnpm run build
         - npm i -g pm2 (to start 3 processes in single terminal)
-        - cd apps/http-server -> pm2 start npm --name "http-server" --start
+        - cd apps/http-server -> pm2 start npm --name "web" -- start (for all 3)
+        - http-3002, web(frontend)-3000, ws-3001
+
+    - configure nginx   
+        - cd apps/web -> sudo vi /etc/nginx/nginx.conf
+        - refer nginx-config folder
+        - cd apps/web -> sudo nginx -s reload
+        
 
     - point domain name to respective servers
 
