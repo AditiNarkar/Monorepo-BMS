@@ -1,1 +1,32 @@
- 
+ name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH agent with EC2 key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add EC2 instance to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -T 60 -H ${{ secrets.EC2_IP_PROD }} >> ~/.ssh/known_hosts
+
+      - name: Deploy and restart on EC2
+        run: |
+          ssh ubuntu@${{ secrets.EC2_IP_PROD }} << 'EOF'
+            cd ~/Monorepo-BMS
+            chmod +x deploy.sh
+            ./deploy.sh
+          EOF
